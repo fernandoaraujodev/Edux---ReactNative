@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 
 //Pages
 //import Home from './pages/Home'
-//import Login from './pages/Login';
+import Login from './pages/Login/login';
 
 //Libs
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -19,19 +19,42 @@ const Drawer = createDrawerNavigator();
 const Stack  = createStackNavigator();
 
 
-export default function App() {
-  //Colocar Navigation
-  return (
-    <View style={styles.container}>
-      <Text>Projeto Iniciado</Text>
+const Logout = ({navigation}) =>{
+  return(
+    <View>
+      <Text>Deseja sair do app?</Text>
+      <Button title="Sair" onPress={() => {
+        AsyncStorage.removeItem('@jwt_nyous');
+        navigation.push('Login');
+      }} />
     </View>
+  )
+}
+
+const Autenticado = () =>{
+  return(
+      <Drawer.Navigator>
+        <Drawer.Screen name='Home' component={Home}  />
+        <Drawer.Screen name='Logout' component={Logout}  />
+      </Drawer.Navigator>
+  )
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name = 'Login' component ={Login}/>
+        <Stack.Screen name = 'Autenticado' component = {Autenticado}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#9200D6',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
