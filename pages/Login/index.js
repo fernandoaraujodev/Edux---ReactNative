@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {View, Text, StyleSheet, TextInput,TouchableOpacity, Image} from 'react-native';
+import {url} from '../../utils/constants';
 
 //Storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = () => {
+const Login = ({navigation}) => {
 
     // Hooks
     const [email, setEmail] = useState('');
@@ -13,26 +14,27 @@ const Login = () => {
     
 const salvarToken = async (value) => {
     try {
-      await AsyncStorage.setItem('@jwt_nyous', value)
+      await AsyncStorage.setItem('@jwt', value)
     } catch (e) {
       // saving error
     }
 }
-    const Logar = ({navigation}) =>{
+    const Logar = () =>{
         const corpo = {
             email : email,
             senha : senha
         }
-        fetch('http://172.17.62.161/api/Login',{ //ip SENAI + endpoint Edux_API
+        fetch(`${url}/Login`,{ //ip SENAI + endpoint Edux_API
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'content-Type' : 'application/json'
             },
             body: JSON.stringify(corpo)
         })        
-        .then(response => response())
+        .then(response => response.json())
         .then(data => {
-            if(data.status != 404){
+            console.log(data);
+            if(data.status != 401){
                 alert('Login efetuado');
                 salvarToken(data.token);
                 navigation.push('Autenticado');
@@ -40,7 +42,6 @@ const salvarToken = async (value) => {
                 alert('Dados inválidos')
             }
         })
-        .catch(() => alert('Falha na requisição, tente novamente'))
         
     }
 
