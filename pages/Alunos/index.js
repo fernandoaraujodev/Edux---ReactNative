@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
 
 const Alunos = ( {navigation}) => {
 
+   
     const [alunoTurma, setAlunoTurma] = useState([]);
     const [turma, setTurma] = useState([]);
 
@@ -108,6 +109,7 @@ const Alunos = ( {navigation}) => {
     useEffect(() =>{
         getToken();
     }, []);
+  
   
     let [fontsLoaded] = useFonts({
         'OpenSans-Light': require('../../assets/fonts/OpenSans-SemiBold.ttf'),

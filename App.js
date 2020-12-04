@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Ranking from './pages/Ranking';
 import Alunos from './pages/Alunos';
 import Login from './pages/Login';
+import Turmas from './pages/Turmas';
 
 //Libs
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -17,7 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSchool, faChalkboardTeacher, faGraduationCap} from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faChalkboardTeacher, faGraduationCap, faChalkboard, faClipboard, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 //Instanciando Libs
 const Tab = createMaterialBottomTabNavigator();
@@ -36,26 +37,44 @@ const Autenticado = () =>{
   >
     <Tab.Screen 
         name="Início" 
-        component={Home}
+        component={Ranking}
         options={{
           tabBarIcon:()=>(
             <FontAwesomeIcon icon={faSchool} size={30} color="#fff"  />
           )
         }} />
-    <Tab.Screen 
-          name="Objetivos" 
-          component={Objetivos}
+    
+    
+      <Tab.Screen 
+          name="Turmas" 
+          component={Turmas} 
           options={{
             tabBarIcon:()=>(
-              <FontAwesomeIcon icon={faChalkboardTeacher} size={30} color="#fff" />
+              <FontAwesomeIcon  icon={faChalkboard} size={30} color="#fff"  />
             )
           }} />
-    <Tab.Screen 
-          name="Ranking" 
-          component={Ranking} 
+          <Tab.Screen 
+          name="Objetivos" 
+          component={Objetivos} 
           options={{
             tabBarIcon:()=>(
               <FontAwesomeIcon  icon={faGraduationCap} size={30} color="#fff"  />
+            )
+          }} />
+          <Tab.Screen 
+          name="Alunos" 
+          component={Alunos}
+          options={{
+            tabBarIcon:()=>(
+              <FontAwesomeIcon icon={faClipboard} size={30} color="#fff" />
+            )
+          }} />
+        <Tab.Screen 
+          name="Timeline" 
+          component={Home} 
+          options={{
+            tabBarIcon:()=>(
+              <FontAwesomeIcon  icon={faUsers} size={30} color="#fff"  />
             )
           }} />
   </Tab.Navigator>
