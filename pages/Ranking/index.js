@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import jwt_decode from "jwt-decode";
 
 
 const styles = StyleSheet.create({
@@ -54,6 +55,18 @@ const Ranking = ( {navigation}) => {
         AsyncStorage.removeItem('@jwt');
         navigation.push('Login');
       }
+
+      useEffect(() =>{
+        getToken();
+    }, []);
+    const [nome, setNome] = useState(null);
+
+    const getToken = async () => {
+        let token = await AsyncStorage.getItem('@jwt');
+        let nome = jwt_decode(token).nameid;
+        setNome(nome);
+        
+    }
     
       let [fontsLoaded] = useFonts({
         'OpenSans-Light': require('../../assets/fonts/OpenSans-SemiBold.ttf'),
@@ -90,8 +103,8 @@ const Ranking = ( {navigation}) => {
                     source={{uri : 'https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png'}}
                 />                                
                   <View style={{marginLeft : 45, color : '#fff'}}>
-                  <Text style={{fontSize : 20, fontWeight : 800, color : '#fff'}}>Nome</Text>
-                  <Text style={{fontSize : 20, color : '#fff'}}>Curso</Text>
+                  <Text style={{fontSize : 20, fontWeight : 800, color : '#fff'}}>{nome}</Text>
+                  <Text style={{fontSize : 15, color : '#fff'}}>Desenvolvimente de sistemas</Text>
                   </View>
                 </View>
                <View style={{width : '100%', height : 500}}>

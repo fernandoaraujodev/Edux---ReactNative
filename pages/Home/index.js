@@ -185,26 +185,24 @@ const Ranking = ( {navigation}) => {
         idUsuario : parseInt(idUser.family_name), 
         idDica : idDica
     }
+    console.log(JSON.stringify(curtida));
 
-    console.log(curtida);
-    console.log('aaaa');
+    fetch(`${url}/Curtida`, {
+        method : "POST",
+        body : JSON.stringify(curtida),
+        headers : {
+            'content-type' : 'application/json',
+            'authorization' : 'Bearer ' + token
+        }
+    })
+    .then(response => response.json())
+    .then(dados => {
+        getToken();
+    })
+    .catch(err => console.error(err))
 
-    // fetch(`${url}/Dica`, {
-    //     method : "POST",
-    //     body : formdata,
-    //     headers : {
-    //         'authorization' : 'Bearer ' + token
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(dados => {
-    //     alert('Dica salva');
+    
 
-    //     setImage(null);
-    //     onChangeText('Qual a dica para hoje?'); 
-    //     getToken();
-    // })
-    // .catch(err => console.error(err))
 }
 
     const uploadImagem = async () => {
@@ -320,13 +318,13 @@ const Ranking = ( {navigation}) => {
 
                    if(item.imagem === undefined){
                        return(
-                        <View style={{flex : 1, marginTop: 25, width : '85%', height : 500, border: 1, borderColor: '#00c2ee',
+                        <View style={{flex : 1, marginTop: 25, width : '85%', height : 550, border: 1, borderColor: '#00c2ee',
                         borderStyle:'solid', alignSelf: "center", borderRadius: 7}} key={index}>
                             <View style={{height : '83%', width : '100%', marginTop: 28, display: 'flex', flexDirection : 'column', justifyContent : 'center', alignItems: 'center', paddingTop : 2, paddingLeft : 20, paddingRight: 20, paddingBottom : 10}}>
                                 <Image 
                                 style={{
                                     flex : 1,
-                                    height : 100,
+                                    height : 140,
                                     borderRadius : 7,
                                     width : '100%',
                                     resizeMode : 'cover'
