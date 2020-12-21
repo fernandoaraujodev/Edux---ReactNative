@@ -49,25 +49,76 @@ const styles = StyleSheet.create({
     
 })
 
-const Ranking = ( {navigation}) => {
+const Ranking = ( ) => {
     
     const Logout = () => {
         AsyncStorage.removeItem('@jwt');
-        navigation.push('Login');
+        // navigation.push('Login');
       }
 
       useEffect(() =>{
         getToken();
+        Ranking();
     }, []);
     const [nome, setNome] = useState(null);
+    const [curtidas, setCurtidas] = useState([]);
+    const [notas, setNotas] = useState([]);
+    const [objOcultos, setObjOcultos] = useState([]);
+    const [objConcluidos, setObjConcluidos] = useState([]);
+    const [id, setId] = useState(null);
+    let cont = 0;
+    let cont1 = 0;
 
     const getToken = async () => {
         let token = await AsyncStorage.getItem('@jwt');
         let nome = jwt_decode(token).nameid;
         setNome(nome);
+        setId(jwt_decode(token).family_name);
         
     }
-    
+
+    const Ranking = async () => {
+      fetch(`${url}/RankingNotas`, {
+        method : "GET"
+      })
+        .then(response => response.json())  
+        .then(dados => {
+          setNotas(dados.data);
+        })
+        .catch(err => console.error(err));
+
+        fetch(`${url}/RankingCurtida`, {
+          method : "GET"
+        })
+          .then(response => response.json())  
+          .then(dados => {
+            setCurtidas(dados.data);
+            
+          })
+          .catch(err => console.error(err));  
+
+          fetch(`${url}/RankingObjOcultos`, {
+            method : "GET"
+          })
+            .then(response => response.json())  
+            .then(dados => {
+              setObjOcultos(dados.data);
+              console.log(dados.data);
+              
+            })
+            .catch(err => console.error(err));  
+
+            fetch(`${url}/RankingObjConcluidos`, {
+              method : "GET"
+            })
+              .then(response => response.json())  
+              .then(dados => {
+                setObjConcluidos(dados.data);
+                console.log(dados.data);
+              })
+              .catch(err => console.error(err));  
+    }
+
       let [fontsLoaded] = useFonts({
         'OpenSans-Light': require('../../assets/fonts/OpenSans-SemiBold.ttf'),
         'OpenSans': require('../../assets/fonts/OpenSans-Regular.ttf'),
@@ -88,6 +139,8 @@ const Ranking = ( {navigation}) => {
 
                <View style={{marginTop : 10,
                  marginBottom : 30, 
+                 marginLeft :4,
+                 marginRight : 4,
                  display : 'flex',
                  justifyContent : 'flex-start',
                  alignItems : 'center',
@@ -118,8 +171,46 @@ const Ranking = ( {navigation}) => {
                   }}
                   >
                   <View style={{display: 'flex', height : '100%', width : '100%', justifyContent : 'center', alignItems : 'center'}}>
-                    <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>1º</Text>
-                    <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>40</Text>
+                    {
+                        objConcluidos.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = cont + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {item.posicao}
+                              º
+                              </Text>
+                            )
+                            
+                          }
+                          else if(objConcluidos.length == (index+1) && cont == 0){
+                            let soma = parseInt(item.posicao) + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {soma}
+                              º
+                              </Text>
+                            ) 
+                          }
+                        })
+                      }
+
+{
+                      objConcluidos.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = 22;
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                {item.pontos}</Text>
+                            )
+                          }else if(objConcluidos.length == (index+1) && cont != 22){
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                0</Text>
+                            ) 
+                          }
+                        })
+                      }
                     <Text style={{fontSize : 15, color : '#fff'}}>Objetivos</Text>
                     <Text style={{fontSize : 15, color : '#fff'}}>Concluídos</Text>
                   </View>
@@ -147,10 +238,51 @@ const Ranking = ( {navigation}) => {
                         }}
                         >
                           <View style={{display: 'flex', height : '100%', width : '100%', justifyContent : 'center', alignItems : 'center'}}>
-                    <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>1º</Text>
-                    <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>40</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Objetivos</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Concluídos</Text>
+                    
+                    {
+                        curtidas.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = cont + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {item.posicao}
+                              º
+                              </Text>
+                            )
+                            
+                          }
+                          else if(curtidas.length == (index+1) && cont == 0){
+                            let soma = parseInt(item.posicao) + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {soma}
+                              º
+                              </Text>
+                            ) 
+                          }
+                        })
+                      }
+                      
+                    
+                    {
+                      curtidas.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = 22;
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                {item.pontos}</Text>
+                            )
+                          }else if(curtidas.length == (index+1) && cont != 22){
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                0</Text>
+                            ) 
+                          }
+                        })
+                      }
+                    
+                    <Text style={{fontSize : 15, color : '#fff'}}>Posts</Text>
+                    <Text style={{fontSize : 15, color : '#fff'}}>Curtidos</Text>
                   </View>
                         </View>  
                         <View
@@ -162,10 +294,49 @@ const Ranking = ( {navigation}) => {
                         }}
                         >
                           <View style={{display: 'flex', height : '100%', width : '100%', justifyContent : 'center', alignItems : 'center'}}>
-                    <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>1º</Text>
-                    <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>40</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Objetivos</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Concluídos</Text>
+                          {
+                        objOcultos.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = cont + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {item.posicao}
+                              º
+                              </Text>
+                            )
+                            
+                          }
+                          else if(objOcultos.length == (index+1) && cont == 0){
+                            let soma = parseInt(item.posicao) + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {soma}
+                              º
+                              </Text>
+                            ) 
+                          }
+                        })
+                      }
+                      
+                    
+                    {
+                      objOcultos.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = 22;
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                {item.pontos}</Text>
+                            )
+                          }else if(objOcultos.length == (index+1) && cont != 22){
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                0</Text>
+                            ) 
+                          }
+                        })
+                      }
+                    <Text style={{fontSize : 15, color : '#fff'}}>Segredos</Text>
+                    <Text style={{fontSize : 15, color : '#fff'}}>encontrados</Text>
                   </View>
                         </View> 
                     </View> 
@@ -181,10 +352,52 @@ const Ranking = ( {navigation}) => {
                   }}
                   >
                     <View style={{display: 'flex', height : '100%', width : '100%', justifyContent : 'center', alignItems : 'center'}}>
-                    <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>1º</Text>
-                    <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>40</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Objetivos</Text>
-                    <Text style={{fontSize : 15, color : '#fff'}}>Concluídos</Text>
+                    
+                      
+                    {
+                        notas.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = cont + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {item.posicao}
+                              º
+                              </Text>
+                            )
+                            
+                          }
+                          else if(notas.length == (index+1) && cont == 0){
+                            let soma = parseInt(item.posicao) + 1;
+                            return(
+                              <Text style={{fontSize : 35, color : '#fff', fontWeight : 800}}>
+                              {soma}
+                              º
+                              </Text>
+                            ) 
+                          }
+                        })
+                      }
+                      
+                    
+                    {
+                      notas.map((item, index)  => {
+                          if(item.idUsuario === parseInt(id)){
+                            cont = 22;
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                {item.pontos}</Text>
+                            )
+                          }else if(notas.length == (index+1) && cont != 22){
+                            return(
+                              <Text style={{fontSize : 25, color : '#fff', fontWeight : 600}}>
+                                0</Text>
+                            ) 
+                          }
+                        })
+                      }
+                    
+                    <Text style={{fontSize : 15, color : '#fff'}}>Notas</Text>
+                    <Text style={{fontSize : 15, color : '#fff'}}>Máximas</Text>
                   </View>
                   </View>  
                </View>

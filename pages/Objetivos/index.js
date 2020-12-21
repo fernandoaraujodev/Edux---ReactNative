@@ -186,11 +186,8 @@ const Objetivos = ( {navigation}) => {
                           <View style={styles.curso}>
                                   <Text style={styles.nomeCurso}>Nenhuma nota lançada</Text>
                                   <Text style={styles.subCurso}>{item.idObjetivoNavigation.descricao}</Text>
-                                  <Text style={{ 
-                                  color : '#9099a9', 
-                                  position: 'absolute',
-                                  top: 105,
-                                  right: -152}}>{item.dataAlcancada.split('T')[0]}</Text>
+                                  <Text style={{color : 'gray', fontSize : 12}}>{item.dataAlcancada}</Text>
+                                  
                           </View>
                           </View>
                       )
@@ -206,11 +203,8 @@ const Objetivos = ( {navigation}) => {
                           <View style={styles.curso}>
                                   <Text style={styles.nomeCurso}>Nota : {item.nota}</Text>
                                   <Text style={styles.subCurso}>{item.idObjetivoNavigation.descricao}</Text>
-                                  <Text style={{ 
-                                  color : '#9099a9', 
-                                  position: 'absolute',
-                                  top: 105,
-                                  right: -152}}>{item.dataAlcancada.split('T')[0]}</Text>
+                                  <Text style={{color : 'gray', fontSize : 12}}>{item.dataAlcancada}</Text>
+                                 
                           </View>
                           </View>
                       )
